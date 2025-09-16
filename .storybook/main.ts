@@ -49,9 +49,9 @@ const config: StorybookConfig = {
         ...config.server,
         fs: {
           strict: false,
-          allow: ['..']
+          allow: [".."],
         },
-        origin: 'http://localhost:6006',
+        origin: "http://localhost:6006",
       },
       optimizeDeps: {
         ...config.optimizeDeps,

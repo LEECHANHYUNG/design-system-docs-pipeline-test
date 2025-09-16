@@ -1,6 +1,6 @@
-import { createMDX } from 'fumadocs-mdx/next';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { createMDX } from "fumadocs-mdx/next";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -12,7 +12,7 @@ const config = {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      '~': path.resolve(__dirname, '../../packages/ui/src'),
+      "~": path.resolve(__dirname, "../../packages/ui/src"),
     };
     return config;
   },

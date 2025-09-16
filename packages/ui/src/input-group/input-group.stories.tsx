@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { InputGroup } from "./input-group";
-import { Input } from "../input";
+import { Input } from "~/input";
 
 const meta: Meta<typeof InputGroup> = {
   title: "Components/InputGroup",
@@ -46,9 +46,9 @@ export const WithButton: Story = {
 export const ThreeInputs: Story = {
   args: {
     children: [
-      <Input key="1" placeholder="First" />,
-      <Input key="2" placeholder="Second" />,
-      <Input key="3" placeholder="Third" />,
+      <InputGroup>
+        <Input />
+      </InputGroup>,
     ],
   },
 };

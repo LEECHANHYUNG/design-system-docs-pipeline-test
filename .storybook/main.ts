@@ -1,27 +1,63 @@
 import type { StorybookConfig } from "@storybook/react-vite";
+import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 
-import { join, dirname } from "path";
+import { resolve, basename } from "path";
 
-/**
- * This function is used to resolve the absolute path of a package.
- * It is needed in projects that use Yarn PnP or are set up within a monorepo.
- */
-function getAbsolutePath(value: string): any {
-  return dirname(require.resolve(join(value, "package.json")));
-}
 const config: StorybookConfig = {
   stories: [
     "../stories/**/*.mdx",
-    "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../packages/ui/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
   addons: [
-    getAbsolutePath("@storybook/addon-docs"),
-    getAbsolutePath("@storybook/addon-a11y"),
-    getAbsolutePath("@storybook/addon-vitest"),
+    "@storybook/addon-docs",
+    "@storybook/addon-a11y",
+    "@storybook/addon-vitest",
   ],
+  core: {
+    builder: "@storybook/builder-vite",
+  },
+
   framework: {
-    name: getAbsolutePath("@storybook/react-vite"),
-    options: {},
+    name: "@storybook/react-vite",
+    options: {
+      builder: {},
+    },
+  },
+  viteFinal: async (config) => {
+    // Customize the Vite config here
+    return {
+      ...config,
+      resolve: {
+        ...config.resolve,
+        alias: {
+          ...config.resolve?.alias,
+          "~": resolve(__dirname, "../packages/ui/src"),
+        },
+      },
+      plugins: [
+        ...(config.plugins || []),
+        vanillaExtractPlugin({
+          identifiers: ({ hash, filePath, debugId }) => {
+            const componentName = basename(filePath, ".css.ts");
+            const prefix = componentName === "sprinkles" ? "v" : componentName;
+
+            return `${prefix}${debugId ? `-${debugId}` : ""}-${hash}`;
+          },
+        }),
+      ],
+      server: {
+        ...config.server,
+        fs: {
+          strict: false,
+          allow: ['..']
+        },
+        origin: 'http://localhost:6006',
+      },
+      optimizeDeps: {
+        ...config.optimizeDeps,
+        force: true,
+      },
+    };
   },
 };
 export default config;

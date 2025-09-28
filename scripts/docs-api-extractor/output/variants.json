@@ -1,0 +1,32 @@
+[
+  {
+    "name": "size",
+    "options": ["sm", "md", "lg", "xl"],
+    "type": "\"sm\" | \"md\" | \"lg\" | \"xl\"",
+    "defaultValue": "md"
+  },
+  {
+    "name": "color",
+    "options": [
+      "primary",
+      "secondary",
+      "success",
+      "warning",
+      "danger",
+      "contrast"
+    ],
+    "type": "\"primary\" | \"secondary\" | \"success\" | \"warning\" | \"danger\" | \"contrast\"",
+    "defaultValue": "primary"
+  },
+  {
+    "name": "variant",
+    "options": ["fill", "outline", "ghost"],
+    "type": "\"fill\" | \"outline\" | \"ghost\"",
+    "defaultValue": "fill"
+  },
+  {
+    "name": "stretch",
+    "options": ["true"],
+    "type": "\"true\""
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "name": "docs-api-extractor",
+  "version": "1.0.0",
+  "description": "TypeScript AST 파싱 라이브러리",
+  "main": "dist/simple-parser.js",
+  "types": "dist/simple-parser.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/example.js",
+    "dev": "tsc && node dist/example.js"
+  },
+  "dependencies": {
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "react-docgen-typescript": "^2.4.0"
+  }
+}

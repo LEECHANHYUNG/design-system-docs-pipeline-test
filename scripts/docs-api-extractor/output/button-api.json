@@ -1,0 +1,42 @@
+[
+  {
+    "tags": {},
+    "filePath": "../../packages/ui/src/button/Button.tsx",
+    "description": "",
+    "displayName": "Button",
+    "methods": [],
+    "props": {
+      "children": {
+        "defaultValue": null,
+        "description": "버튼 내부에 표시될 내용입니다.",
+        "name": "children",
+        "parent": {
+          "fileName": "../../packages/ui/src/button/Button.tsx",
+          "name": "ButtonProps"
+        },
+        "declarations": [
+          {
+            "fileName": "../../packages/ui/src/button/Button.tsx",
+            "name": "ButtonProps"
+          }
+        ],
+        "required": true,
+        "type": {
+          "name": "ReactNode"
+        }
+      },
+      "color": {
+        "defaultValue": {
+          "value": "primary"
+        },
+        "description": "",
+        "name": "color",
+        "declarations": [],
+        "required": false,
+        "type": {
+          "name": "\"primary\" | \"secondary\" | \"danger\""
+        }
+      }
+    }
+  }
+]

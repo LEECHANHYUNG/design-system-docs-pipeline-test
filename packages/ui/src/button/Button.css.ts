@@ -167,7 +167,7 @@ export const root = recipe({
       ],
     },
 
-    stretch: { true: layerStyle("components", { width: "100%" }) },
+    stretch: { true: layerStyle("components", { width: "100%" }), false: {} },
   },
 });
 

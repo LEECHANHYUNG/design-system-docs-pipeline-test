@@ -1,26 +1,19 @@
 import * as ts from "typescript";
 import * as fs from "fs";
 import * as path from "path";
+import { TSConfigManager, TSConfigOptions } from "./TSConfigManager";
 
 interface VariantInfo {
   name: string;
   options: string[];
-  type: string;
   defaultValue?: string;
 }
 
 export class VariantsExtractor {
-  private program?: ts.Program;
-  private checker?: ts.TypeChecker;
+  private tsConfigManager: TSConfigManager;
 
-  constructor() {
-    this.setupCompiler();
-  }
-
-  private setupCompiler(): void {
-    const configOptions = ts.getDefaultCompilerOptions();
-    this.program = ts.createProgram([], configOptions);
-    this.checker = this.program.getTypeChecker();
+  constructor(tsConfigOptions?: TSConfigOptions) {
+    this.tsConfigManager = new TSConfigManager(tsConfigOptions);
   }
 
   /**
@@ -99,11 +92,13 @@ export class VariantsExtractor {
               }
             });
           }
+          if (options.length === 1 && options[0] === "true") {
+            options.unshift("false"); // false를 앞에 추가
+          }
 
           variants.push({
             name: variantName,
             options: options,
-            type: options.map((opt) => `"${opt}"`).join(" | "),
           });
         }
       });
@@ -132,13 +127,29 @@ export class VariantsExtractor {
           ts.isIdentifier(defaultProp.name)
         ) {
           const variantName = defaultProp.name.text;
-          const defaultValue = ts.isStringLiteral(defaultProp.initializer)
-            ? defaultProp.initializer.text
-            : undefined;
+
+          console.log(defaultProp.initializer.kind);
+
+          // String, Boolean, Number 등 다양한 타입의 기본값 처리
+          let defaultValue: string | undefined;
+
+          if (ts.isStringLiteral(defaultProp.initializer)) {
+            defaultValue = defaultProp.initializer.text;
+          } else if (
+            defaultProp.initializer.kind === ts.SyntaxKind.TrueKeyword
+          ) {
+            defaultValue = "true";
+          } else if (
+            defaultProp.initializer.kind === ts.SyntaxKind.FalseKeyword
+          ) {
+            defaultValue = "false";
+          } else if (ts.isNumericLiteral(defaultProp.initializer)) {
+            defaultValue = defaultProp.initializer.text;
+          }
 
           // 기존 variant에 기본값 추가
           const variant = variants.find((v) => v.name === variantName);
-          if (variant) {
+          if (variant && defaultValue) {
             variant.defaultValue = defaultValue;
           }
         }
